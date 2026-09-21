@@ -61,6 +61,19 @@ puts the seeded one back without deleting logged sessions.
 
 Cardio exercises (the Lower B bike work) log **minutes + average HR** instead of kg × reps.
 
+## Installing it on your phone
+
+It is an installable PWA. Open the Pages URL in Chrome and either tap **Install app** on the home
+screen, or use Chrome's menu → *Add to Home screen*. It then launches fullscreen with no browser
+chrome, from its own icon.
+
+Once installed the app shell is precached by a service worker, so it **opens and logs offline** —
+useful in a basement gym with no signal. Your data was always local; this makes the app itself
+local too. New versions are picked up automatically on the next launch (`registerType: 'autoUpdate'`).
+
+Installability needs HTTPS, which the Pages URL provides. On `localhost` it also works; opening
+`index.html` off disk does not.
+
 ## Backups
 
 Browser storage is not durable — you or Chrome can clear it, and Incognito storage is discarded on
@@ -70,7 +83,9 @@ session links survive intact).
 ## Deploying
 
 `.github/workflows/deploy.yml` builds and publishes to GitHub Pages on every push to `main`.
-Enable it once under **Settings → Pages → Source: GitHub Actions**. `vite.config.ts` uses
+Pages must be enabled once under **Settings → Pages → Source: GitHub Actions** — the workflow
+cannot do it for you, since creating a Pages site needs `administration:write` and `GITHUB_TOKEN`
+never holds that. `vite.config.ts` uses
 `base: './'`, so the same build works on localhost and under `/<repo>/` on Pages.
 
 The Pages URL is just a stable origin to load the app from. Your training data stays in your
