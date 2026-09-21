@@ -25,11 +25,12 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+      # Requires Pages to be on already: Settings -> Pages -> Source:
+      # GitHub Actions. The action's `enablement: true` cannot do it for us —
+      # creating a Pages site needs administration:write, which GITHUB_TOKEN
+      # can never hold, so it fails with "Resource not accessible by
+      # integration".
       - uses: actions/configure-pages@v5
-        # Turns Pages on for the repo if it is not configured yet, so a
-        # fresh clone deploys without visiting Settings first.
-        with:
-          enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
